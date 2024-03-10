@@ -1,0 +1,23 @@
+{
+  "name": "fhs-2024-ss-mmt-m-frontend-engineering",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "prettier": "@kiwikilian/prettier-config",
+  "dependencies": {
+    "@slidev/cli": "0.48.0-beta.26",
+    "@slidev/theme-apple-basic": "0.25.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "vue": "3.4.21"
+  },
+  "devDependencies": {
+    "@kiwikilian/prettier-config": "1.0.1",
+    "@types/react": "18.2.64",
+    "prettier": "3.2.5"
+  }
+}
