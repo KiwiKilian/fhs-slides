@@ -122,13 +122,13 @@ backgroundSize: contain
 
 # Which libraries from a SPA can be used in RN?
 
-- UI Libraries/Components for the web ❌
+- UI Libraries/Components for the web <v-click>❌</v-click>
   - MUI, Spectrum...
-- CSS Frameworks ❌
+- CSS Frameworks <v-click>❌</v-click>
   - shadcn/ui, Bootstrap, Tailwind...
-- Anything headless for React ✅
+- Anything headless for React <v-click>✅</v-click>
   - TanStack Query/Table, Apollo, zustand, Redux...
-- Any plain logic JS library ✅
+- Any plain logic JS library <v-click>✅</v-click>
   - lodash, Turf.js, currency.js...
 
 ---

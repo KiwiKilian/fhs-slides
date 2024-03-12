@@ -179,7 +179,7 @@ export default config;
 # Use a tight ESLint Config
 
 [//]: # (TODO SCROLL)
-```js
+```js {2|10-28|29-55}{maxHeight:'100%'}
 module.exports = {
   extends: ['airbnb', 'airbnb/hooks', 'airbnb-typescript', 'prettier'],
 
@@ -240,8 +240,6 @@ module.exports = {
 ```
 
 ---
-transition: slide-left
----
 
 # Setup your linting scripts
 
@@ -256,3 +254,15 @@ transition: slide-left
   - Merge only with zero warnings and errors
   - Starting out loose takes more time in the end
 - Add CI/CD to enforce these
+
+---
+transition: slide-left
+---
+
+# Let's view at your Setup as a Mob
+
+Mob programming:
+- 1 driver has the keyboard
+- 1 navigator makes the decisions
+- The whole mobs discusses together
+- Roles switch every 10 to 15 Minutes

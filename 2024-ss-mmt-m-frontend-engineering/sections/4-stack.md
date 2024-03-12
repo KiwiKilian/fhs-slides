@@ -85,6 +85,8 @@ A SPA needs client side routing, most popular solutions:
 
 # Why is a Router necessary in React Native? 📱
 
+<v-clicks>
+
 - Apps also have multiple screens &rarr; Where is my user currently?
 - Apps can be linked from websites
   - (Do you want to watch this video in our app?)
@@ -99,6 +101,7 @@ A SPA needs client side routing, most popular solutions:
         - Any app can register for any scheme
         - If multiple apps for scheme available, iOS chooses one randomly
 
+</v-clicks>
 ---
 
 # React Native Routers
@@ -161,92 +164,353 @@ return (
 What problem do you might see?
 
 ---
+layout: two-cols
+---
 
 # Prop Drilling
 
+<v-clicks>
+
 - `useState` must be in the highest common component
 - Passes state and setter down to (multiple levels of) children
-
-
-
 - Feels redundant
-- Might go through components which don't use it themself
+- Might go through components which don't use it themselves
 - Harder to refactor
 
+</v-clicks>
+
+::right::
+
+<img src="/assets/react-prop-drilling.webp" class="m-auto mt-16" style="max-height: 160px"/>
+<div class="text-right">
+
+[^1]
+</div>
+
+
+<!-- Footer -->
+[^1]: https://react.dev/learn/passing-data-deeply-with-context
+
+---
+layout: two-cols
+---
+
+# Context
+
+- React built-in solution to passing down a state from a parent through a provider
+- Access possible in all child components
+- Produces a lot of boilerplate code
+
+::right::
+
+```ts {all|3-5|7-20|22-28|30-55}{maxHeight:'100%'}
+import { createContext, useContext, useReducer } from 'react';
+
+const TasksContext = createContext(null);
+
+const TasksDispatchContext = createContext(null);
+
+export function TasksProvider({ children }) {
+  const [tasks, dispatch] = useReducer(
+    tasksReducer,
+    []
+  );
+
+  return (
+    <TasksContext.Provider value={tasks}>
+      <TasksDispatchContext.Provider value={dispatch}>
+        {children}
+      </TasksDispatchContext.Provider>
+    </TasksContext.Provider>
+  );
+}
+
+export function useTasks() {
+  return useContext(TasksContext);
+}
+
+export function useTasksDispatch() {
+  return useContext(TasksDispatchContext);
+}
+
+function tasksReducer(tasks, action) {
+  switch (action.type) {
+    case 'added': {
+      return [...tasks, {
+        id: action.id,
+        text: action.text,
+        done: false
+      }];
+    }
+    case 'changed': {
+      return tasks.map(t => {
+        if (t.id === action.task.id) {
+          return action.task;
+        } else {
+          return t;
+        }
+      });
+    }
+    case 'deleted': {
+      return tasks.filter(t => t.id !== action.id);
+    }
+    default: {
+      throw Error('Unknown action: ' + action.type);
+    }
+  }
+}
+```
+
+https://react.dev/learn/scaling-up-with-reducer-and-context
 
 ---
 
-<Tweet id="1759803449418629232" />
+# Alternatives?
 
-
-
----
-
-## Organizing your store
-
-- Keep all your `actions` (functions modifying your state) in one object
+<Tweet id="1759803449418629232" scale="0.75" />
 
 ---
 
-# `zustand` Example
+# `zustand`
 
-```ts {all|4|6-9|all}
+```ts {1|3|5-13|15-31}{maxHeight:'100%'}
 import { create } from 'zustand';
 
-type Bicycle = { type: 'city' | 'mountain' | 'road' | 'gravel' };
+type Task = { id: number; text: string; done: boolean };
 
-type BicycleStoreState = {
-  bicycles: Bicycle[];
+type TasksStoreState = {
+  tasks: Task[];
 
   actions: {
-    addBicycle: (newBicycle: Bicycle) => void;
-    trashBicycles: () => void;
+    addTask: (task: Task) => void;
+    updateTask: (updatedTask: Task) => void;
+    deleteTask: (deletedTask: Task) => void;
   };
 };
 
-const useBicycleStore = create<BicycleStoreState>((set) => ({
-  bicycles: [],
+const useTasksStore = create<TasksStoreState>((set) => ({
+  tasks: [],
 
   actions: {
-    addBicycle: (bicycle) => set(({ bicycles }) => ({ bicycles: [...bicycles, bicycle] })),
-    trashBicycles: () => set({ bicycles: [] }),
+    addTask: (task) => set(({ tasks }) => ({ tasks: [...tasks, task] })),
+    updateTask: (updatedTask) =>
+            set(({ tasks }) => ({
+              tasks: tasks.map((task) =>
+                      task.id === updatedTask.id ? updatedTask : task,
+              ),
+            })),
+    deleteTask: (deletedTask) =>
+            set(({ tasks }) => ({
+              tasks: tasks.filter(({ id }) => id !== deletedTask.id),
+            })),
   },
 }));
 ```
 
 ---
 
-## Persisting
+# Actions[^1]
 
-- LocalStorage/AsyncStorage
-- Versioning
-- Partialize
+- Keep all your `actions` (functions modifying your state) in one object
+  - They are static and can thus be easily selected
+```ts
+const { addTask, updateTask } = useTaskStore(state => state.actions);
+```
+
+- Move your business logic into those `actions`
+  - Create actual domain tasks e.g. `add`, `update`, `delete`...
+- Name your `actions` along your business logic
+- Try to avoid plain setters, if possible
+- Use other state from same or different store inside your `actions`
+- Your actions can also be `async`, call `set` when finished
+- Create different stores, for different domains!
+
+
+<!-- Footer !-->
+[^1]: https://tkdodo.eu/blog/working-with-zustand
 
 ---
 
-# Context
+# Selecting state
+
+- Make atomic picks
+
+```ts
+const tasks = useTasksStore(state => state.tasks);
+```
+
+- If you need multiple fields, make multiple picks
+- If you need a combined object leverage `useShallow`
 
 ---
 
-## Best practices
+# Persisting
+
+- `persist` middleware allows saving the state to different synchronous and asynchronous stores
+  - LocalStorage
+  - AsyncStorage
+  - IndexDB
+- Set a `version` in combination with `migrate` to change your persisted store if structure changed
+- Use `partialize` to only persist a part of your store (e.g. excluding your `actions`)
+  - Will be shallow merged storage with your store state on hydration
+
+With very low effort, a global store is now persisted to a storage of our choice
+
+---
+layout: two-cols
+---
+
+# Global vs. Context
+
+- Store now is global, not provided via context
+- When do we need a store in a context?
+
+<v-click>
+&rarr; Complex components (many levels of children) with separate stores
+</v-click>
+
+::right::
+
+```ts
+import { createContext, useContext, useRef } from 'react'
+import { createStore, useStore } from 'zustand'
+
+const StoreContext = createContext(null)
+
+const StoreProvider = ({ children }) => {
+  const storeRef = useRef()
+  if (!storeRef.current) {
+    storeRef.current = createStore((set) => ({
+      // possibility to pass props
+    }))
+  }
+  return (
+    <StoreContext.Provider value={storeRef.current}>
+      {children}
+    </StoreContext.Provider>
+  )
+}
+
+const useStoreInContext = (selector) => {
+  const store = useContext(StoreContext)
+  if (!store) {
+    throw new Error('Missing StoreProvider')
+  }
+  return useStore(store, selector)
+}
+```
+
+---
+
+# Immutability
 
 Same recommendations as for `useState` apply:
 
 - Avoid mutating
 - Create new [objects](https://react.dev/learn/updating-objects-in-state#recap)/[arrays](https://react.dev/learn/updating-arrays-in-state#recap)
+- Alternatively use [`immer`](https://github.com/immerjs/immer)
 
-- Avoid setters, created reducers
-  - Move business logic to your store
-  -
-
----
-
-# Generate your API clients
+**Homework?**
 
 ---
 
-# Use TanStack Query
+# Small, predictable, no magic
+
+- `zustand` is very comprehensible
+- Less boilerplate
+- Nicely typed
+- Highly extensible
 
 ---
+layout: center
+---
+
+# Data Fetching
+
+---
+
+# What's wrong with `fetch` in `useEffect`?[^1]
+
+```ts
+const [data, setData] = useState([])
+const [error, setError] = useState()
+
+useEffect(() => {
+  fetch(`${endpoint}/${category}`)
+    .then(response => response.json())
+    .then(data => setData(data))
+    .catch(error => setError(error))
+}, [category])
+```
+
+<v-clicks>
+
+- Race condition
+- Loading state
+- Empty state
+- Reset when dependency changes
+- Fires twice in `StrictMode`
+- `response.ok`?
+
+</v-clicks>
+
+<!-- Footer -->
+[^1]: https://tkdodo.eu/blog/why-you-want-react-query
+
+---
+
+# `@tanstack/react-query` to the Rescue[^1]
+
+- No race condition, state is stored by its input
+- Loading, data and error states
+- Specify your placeholderData separately
+- Previous data will only be supplied if requested
+- Request deduplication
+
+&rarr; React Query is an async state manager, not a data fetching library
+
+<!-- Footer -->
+[^1]: https://tkdodo.eu/blog/why-you-want-react-query
+---
+
 # Organize your Query Keys
---
+
+
+```ts
+const todoKeys = {
+  all: ['todos'] as const,
+  lists: () => [...todoKeys.all, 'list'] as const,
+  list: (filters: string) => [...todoKeys.lists(), { filters }] as const,
+  details: () => [...todoKeys.all, 'detail'] as const,
+  detail: (id: number) => [...todoKeys.details(), id] as const,
+}
+
+useQuery({
+  queryKey: todoKeys.detail(1),
+  queryFn: fetchTodo(1),
+});
+
+queryClient.invalidateQueries({
+  queryKey: todoKeys.details()
+})
+```
+
+[^1]
+
+<!-- Footer -->
+[^1]: https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories
+
+---
+
+# Generate your API Clients
+- Build your APIs with [OpenAPI](https://www.openapis.org/) specs
+  - Example: https://editor.swagger.io/
+- Generate API clients with TypeScript
+- Gets your models as types to the client
+- Create `fetch` methods for you
+- Create an API contract
+  - OpenAPI spec must be strictly matching your actual sent data
+  - Can make versioning obsolete
+- [`openapi-typescript-codegen`](https://github.com/ferdikoomen/openapi-typescript-codegen)
+- [`oazapfts`](https://github.com/oazapfts/oazapfts)
+- Many more...
