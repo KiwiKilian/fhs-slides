@@ -34,7 +34,7 @@ hideInToc: false
 - App logic and interface can be written in a single language
 - Native UI elements 👍
 - Access to native code through bridges (foreign function interface) or similar 👍
-- Dependency to meta framework between your app and native platform 👎
+- Dependency to framework between your app and native platform 👎
 - It's still an app bend to multiple platforms `¯\_(ツ)_/¯`
 - Frameworks: .NET MAUI, Flutter, React Native
 
@@ -103,9 +103,7 @@ class: text-center
 https://reactnative.dev/docs/intro-react-native-components
 
 ---
-layout: image-right
-image: ../assets/react-native-styles.png
-backgroundSize: contain
+layout: two-cols
 ---
 
 # Styling & Layout
@@ -117,6 +115,10 @@ backgroundSize: contain
 - Some restricted to specific elements (as only `Text` can handle text)
 - `position: relative | absolute`)
 - Flex Layout only (via engine called yoga) (`display: none | flex`)
+
+::right::
+
+<img src="/assets/react-native-styles.png" class="mt-10 p-5" style="width: auto; object-fit: contain" />
 
 ---
 

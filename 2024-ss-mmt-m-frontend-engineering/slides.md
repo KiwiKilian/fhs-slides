@@ -56,4 +56,4 @@ class: text-center
 
 # Thanks for participating 👋
 
-[GitHub](https://github.com/slidevjs/slidev) · [kilianfinger.com](https://www.kilianfinger.com/)
+[GitHub](https://github.com/KiwiKilian/fhs-slides/tree/main/2024-ss-mmt-m-frontend-engineering) · [kilianfinger.com](https://www.kilianfinger.com/)

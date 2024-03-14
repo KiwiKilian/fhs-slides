@@ -201,6 +201,22 @@ layout: two-cols
 - Access possible in all child components
 - Produces a lot of boilerplate code
 
+```tsx
+function Parent() {
+  return (
+    <TasksProvider>
+    <Children />
+  </TasksProvider>
+  )
+}
+
+function Children() {
+  const tasks = useTasks()
+  
+  return <p>You have {tasks.length} tasks</p>
+}
+```
+
 ::right::
 
 ```ts {all|3-5|7-20|22-28|30-55}{maxHeight:'100%'}
@@ -326,7 +342,7 @@ const { addTask, updateTask } = useTaskStore(state => state.actions);
 - Create different stores, for different domains!
 
 
-<!-- Footer !-->
+<!-- Footer -->
 [^1]: https://tkdodo.eu/blog/working-with-zustand
 
 ---
@@ -471,6 +487,26 @@ useEffect(() => {
 
 <!-- Footer -->
 [^1]: https://tkdodo.eu/blog/why-you-want-react-query
+---
+
+# React Query Keys[^1]
+
+- The `queryKey` is comparable to a `useEffect` dependency array
+  - `queryKey` must be unique to the query's data
+  - If the `queryKey` changes, the `queryFn` will trigger again (e.g. when the id changes)
+    
+    &rarr; If your query function depends on a variable, include it in your query key
+  - Can include primitives or objects
+- If you just want to reload the same data use `refetch` (returned from `useQuery`)
+
+```tsx
+const todoId = 1; 
+const { data } = useQuery({ queryKey: ['todos', 'details', todoId], queryFn: () => getTodoDetail(todoId) })
+```
+
+<!-- Footer -->
+[^1]: https://tanstack.com/query/latest/docs/framework/react/guides/query-keys
+
 ---
 
 # Organize your Query Keys

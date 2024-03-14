@@ -256,6 +256,28 @@ module.exports = {
 - Add CI/CD to enforce these
 
 ---
+
+# `React.StrictMode`
+
+Strict Mode enables the following development-only behaviors: [^1]
+
+- Your components will re-render an extra time to find bugs caused by impure rendering
+- Your components will re-run Effects an extra time to find bugs caused by missing Effect cleanup
+- Your components will be checked for usage of deprecated APIs
+
+**All of these checks are development-only and do not impact the production build.**
+
+In your most root file (`index.tsx`, `App.tsx`, `_layout.tsx`):
+```tsx
+<React.StrictMode>
+  <App />
+</React.StrictMode>
+```
+
+<!-- Footer -->
+[^1]: https://react.dev/reference/react/StrictMode#strictmode
+
+---
 transition: slide-left
 ---
 
