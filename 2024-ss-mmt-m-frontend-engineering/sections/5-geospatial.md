@@ -128,19 +128,21 @@ Let's draw them on [geojson.io](https://geojson.io/#map=16.04/47.723509/13.08618
 ```json
 {
   "type": "FeatureCollection",
-  "features": {
-    "type": "Feature",
-    "geometry": {
-      "type": "Point",
-      "coordinates": [
-        13.086521149298349,
-        47.72393242567343
-      ]
-    },
-    "properties": {
-      "name": "FH Salzburg"
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.086521149298349,
+          47.72393242567343
+        ]
+      },
+      "properties": {
+        "name": "FH Salzburg"
+      }
     }
-  } 
+  ]
 }
 ```
 
@@ -243,6 +245,7 @@ equator.
 - Instead of rasterized images, vector information with properties will be downloaded
   - In the same tiles style as with raster imagery
 - Must be rendered by the client browser
+  - Data is thereby on the client and can be queried
 - Currently driven by [Mapbox Vector Tile Specification](https://github.com/mapbox/vector-tile-spec)
   - Basically a special binary format to transfer GeoJSON very efficiently
 - Vector precisions of the same feature will be different, depending on zoom level
@@ -268,8 +271,8 @@ import Map, { LngLatBoundsLike } from 'react-map-gl/maplibre';
 export function BaseMap() {
   return (
     <Map
-            mapStyle="https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json"
-            initialViewState={{ bounds: [5.8, 47.2, 15.1, 55.1] }}
+      mapStyle="https://sgx.geodatenzentrum.de/gdz_basemapde_vektor/styles/bm_web_col.json"
+      initialViewState={{ bounds: [5.8, 47.2, 15.1, 55.1] }}
     />
   );
 }
