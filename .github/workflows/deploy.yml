@@ -16,10 +16,16 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+
     strategy:
       matrix: { directory: [ '2024-ss-mmt-m-frontend-engineering' ] }
+
+    environment:
+      name: production
+      url: https://slides.kilianfinger.com/fhs-${{ matrix.directory }}/
+
     defaults:
       run:
         working-directory: ${{ matrix.directory }}
@@ -42,7 +48,11 @@ jobs:
       - name: Build
         run: npm run build -- --base /fhs-${{ matrix.directory }}/
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: dist
+      - uses: easingthemes/ssh-deploy@v5.0.1
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: '-avh --delete'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SOURCE: ${{ matrix.directory }}/dist
+          TARGET: ${{ secrets.REMOTE_TARGET }}/fhs-${{ matrix.directory }}/
