@@ -54,5 +54,5 @@ jobs:
           ARGS: '-avh --delete'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE: ${{ matrix.directory }}/dist
+          SOURCE: ${{ matrix.directory }}/dist/
           TARGET: ${{ secrets.REMOTE_TARGET }}/fhs-${{ matrix.directory }}/
