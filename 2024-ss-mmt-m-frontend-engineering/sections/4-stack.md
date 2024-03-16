@@ -102,6 +102,7 @@ A SPA needs client side routing, most popular solutions:
         - If multiple apps for scheme available, iOS chooses one randomly
 
 </v-clicks>
+
 ---
 
 # React Native Routers
@@ -152,7 +153,7 @@ const [currentLocation, setCurrentLocation] = useState<RouteFeature>();
 return (
   <>
     <p>Your current route: {route.properties.name}</p>
-    
+
     <RouteOriginInput route={route} />
     <RouteDestinationInput route={route} />
     <RouteMap route={route} />
@@ -185,10 +186,11 @@ layout: two-cols
 <div class="text-right">
 
 [^1]
+
 </div>
 
-
 <!-- Footer -->
+
 [^1]: https://react.dev/learn/passing-data-deeply-with-context
 
 ---
@@ -205,15 +207,15 @@ layout: two-cols
 function Parent() {
   return (
     <TasksProvider>
-    <Children />
-  </TasksProvider>
-  )
+      <Children />
+    </TasksProvider>
+  );
 }
 
 function Children() {
-  const tasks = useTasks()
-  
-  return <p>You have {tasks.length} tasks</p>
+  const tasks = useTasks();
+
+  return <p>You have {tasks.length} tasks</p>;
 }
 ```
 
@@ -310,15 +312,13 @@ const useTasksStore = create<TasksStoreState>((set) => ({
   actions: {
     addTask: (task) => set(({ tasks }) => ({ tasks: [...tasks, task] })),
     updateTask: (updatedTask) =>
-            set(({ tasks }) => ({
-              tasks: tasks.map((task) =>
-                      task.id === updatedTask.id ? updatedTask : task,
-              ),
-            })),
+      set(({ tasks }) => ({
+        tasks: tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)),
+      })),
     deleteTask: (deletedTask) =>
-            set(({ tasks }) => ({
-              tasks: tasks.filter(({ id }) => id !== deletedTask.id),
-            })),
+      set(({ tasks }) => ({
+        tasks: tasks.filter(({ id }) => id !== deletedTask.id),
+      })),
   },
 }));
 ```
@@ -329,8 +329,9 @@ const useTasksStore = create<TasksStoreState>((set) => ({
 
 - Keep all your `actions` (functions modifying your state) in one object
   - They are static and can thus be easily selected
+
 ```ts
-const { addTask, updateTask } = useTaskStore(state => state.actions);
+const { addTask, updateTask } = useTaskStore((state) => state.actions);
 ```
 
 - Move your business logic into those `actions`
@@ -341,8 +342,8 @@ const { addTask, updateTask } = useTaskStore(state => state.actions);
 - Your actions can also be `async`, call `set` when finished
 - Create different stores, for different domains!
 
-
 <!-- Footer -->
+
 [^1]: https://tkdodo.eu/blog/working-with-zustand
 
 ---
@@ -352,7 +353,7 @@ const { addTask, updateTask } = useTaskStore(state => state.actions);
 - Make atomic picks
 
 ```ts
-const tasks = useTasksStore(state => state.tasks);
+const tasks = useTasksStore((state) => state.tasks);
 ```
 
 - If you need multiple fields, make multiple picks
@@ -448,15 +449,15 @@ layout: center
 # What's wrong with `fetch` in `useEffect`?[^1]
 
 ```ts
-const [data, setData] = useState([])
-const [error, setError] = useState()
+const [data, setData] = useState([]);
+const [error, setError] = useState();
 
 useEffect(() => {
   fetch(`${endpoint}/${category}`)
-    .then(response => response.json())
-    .then(data => setData(data))
-    .catch(error => setError(error))
-}, [category])
+    .then((response) => response.json())
+    .then((data) => setData(data))
+    .catch((error) => setError(error));
+}, [category]);
 ```
 
 <v-clicks>
@@ -471,6 +472,7 @@ useEffect(() => {
 </v-clicks>
 
 <!-- Footer -->
+
 [^1]: https://tkdodo.eu/blog/why-you-want-react-query
 
 ---
@@ -486,31 +488,36 @@ useEffect(() => {
 &rarr; React Query is an async state manager, not a data fetching library
 
 <!-- Footer -->
+
 [^1]: https://tkdodo.eu/blog/why-you-want-react-query
+
 ---
 
 # React Query Keys[^1]
 
 - The `queryKey` is comparable to a `useEffect` dependency array
+
   - `queryKey` must be unique to the query's data
   - If the `queryKey` changes, the `queryFn` will trigger again (e.g. when the id changes)
-    
+
     &rarr; If your query function depends on a variable, include it in your query key
+
   - Can include primitives or objects
+
 - If you just want to reload the same data use `refetch` (returned from `useQuery`)
 
 ```tsx
-const todoId = 1; 
-const { data } = useQuery({ queryKey: ['todos', 'details', todoId], queryFn: () => getTodoDetail(todoId) })
+const todoId = 1;
+const { data } = useQuery({ queryKey: ['todos', 'details', todoId], queryFn: () => getTodoDetail(todoId) });
 ```
 
 <!-- Footer -->
+
 [^1]: https://tanstack.com/query/latest/docs/framework/react/guides/query-keys
 
 ---
 
 # Organize your Query Keys
-
 
 ```ts
 const todoKeys = {
@@ -519,7 +526,7 @@ const todoKeys = {
   list: (filters: string) => [...todoKeys.lists(), { filters }] as const,
   details: () => [...todoKeys.all, 'detail'] as const,
   detail: (id: number) => [...todoKeys.details(), id] as const,
-}
+};
 
 useQuery({
   queryKey: todoKeys.detail(1),
@@ -527,18 +534,20 @@ useQuery({
 });
 
 queryClient.invalidateQueries({
-  queryKey: todoKeys.details()
-})
+  queryKey: todoKeys.details(),
+});
 ```
 
 [^1]
 
 <!-- Footer -->
+
 [^1]: https://tkdodo.eu/blog/effective-react-query-keys#use-query-key-factories
 
 ---
 
 # Generate your API Clients
+
 - Build your APIs with [OpenAPI](https://www.openapis.org/) specs
   - Example: https://editor.swagger.io/
 - Generate API clients with TypeScript

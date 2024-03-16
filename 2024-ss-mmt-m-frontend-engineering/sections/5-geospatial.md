@@ -10,6 +10,7 @@ hideInToc: false
 # Web Mercator
 
 Common coordinate systems used on the web:
+
 - WGS 84/EPSG:4326
   - A coordinate sytem on the surface of a sphere (the earth)
   - Used for data storage/transfer
@@ -19,7 +20,6 @@ Common coordinate systems used on the web:
   - Areas grow with distance from the equator, polar regions are oversized
 
 <img width="200" src="/assets/geospatial-web-mercator.png">
-
 
 ---
 layout: iframe
@@ -31,12 +31,11 @@ url: https://macwright.com/lonlat/
 # GeoJSON – [RFC 7946](https://datatracker.ietf.org/doc/html/rfc7946)
 
 > GeoJSON is a geospatial data interchange format based on JavaScript
-Object Notation (JSON).  It defines several types of JSON objects and
-the manner in which they are combined to represent data about
-geographic features, their properties, and their spatial extents.
-GeoJSON uses a geographic coordinate reference system, World Geodetic
-System 1984, and units of decimal degrees.
-
+> Object Notation (JSON). It defines several types of JSON objects and
+> the manner in which they are combined to represent data about
+> geographic features, their properties, and their spatial extents.
+> GeoJSON uses a geographic coordinate reference system, World Geodetic
+> System 1984, and units of decimal degrees.
 
 So we have `@types/geojson@7946.0.x`
 
@@ -49,7 +48,9 @@ So we have `@types/geojson@7946.0.x`
 Let's draw them on [geojson.io](https://geojson.io/#map=16.04/47.723509/13.086181)
 
 <!-- Footer -->
+
 [^1]: https://geobgu.xyz/web-mapping2/geojson-1.html
+
 ---
 
 # Point
@@ -85,6 +86,7 @@ Let's draw them on [geojson.io](https://geojson.io/#map=16.04/47.723509/13.08618
 ---
 
 # Polygon
+
 ```json
 {
   "type": "Polygon",
@@ -133,10 +135,7 @@ Let's draw them on [geojson.io](https://geojson.io/#map=16.04/47.723509/13.08618
       "type": "Feature",
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          13.086521149298349,
-          47.72393242567343
-        ]
+        "coordinates": [13.086521149298349, 47.72393242567343]
       },
       "properties": {
         "name": "FH Salzburg"
@@ -179,12 +178,12 @@ var distance = turf.distance(from, to, { units: 'kilometers' });
 
 ```ts
 const line = turf.lineString([
-    [-77.031669, 38.878605],
-    [-77.029609, 38.881946],
-    [-77.020339, 38.884084],
-    [-77.025661, 38.885821],
-    [-77.021884, 38.889563],
-    [-77.019824, 38.892368]
+  [-77.031669, 38.878605],
+  [-77.029609, 38.881946],
+  [-77.020339, 38.884084],
+  [-77.025661, 38.885821],
+  [-77.021884, 38.889563],
+  [-77.019824, 38.892368],
 ]);
 const pt = turf.point([-77.037076, 38.884017]);
 
@@ -215,13 +214,12 @@ layout: center
 - Description of tiles and zoom of [WMTS](https://www.ogc.org/standard/wmts/) spec:
 
 > This well-known scale set has been defined to be compatible with Google Maps and
-Microsoft Live Map projections and zoom levels. Level 0 allows representing the whole
-world in a single 256x256 pixels. The next level represents the whole world in 2x2 tiles
-of 256x256 pixels and so on in powers of 2. Scale denominator is only accurate near the
-equator.
+> Microsoft Live Map projections and zoom levels. Level 0 allows representing the whole
+> world in a single 256x256 pixels. The next level represents the whole world in 2x2 tiles
+> of 256x256 pixels and so on in powers of 2. Scale denominator is only accurate near the
+> equator.
 
 <img class="mt-10 mx-auto" width="480" src="/assets/geospatial-map-tiles.jpeg">
-
 
 ---
 
@@ -236,6 +234,7 @@ equator.
 - Optimal for satellite imagery
 
 <!-- Footer -->
+
 [^1]: https://www.ogc.org/standard/wmts/
 
 ---

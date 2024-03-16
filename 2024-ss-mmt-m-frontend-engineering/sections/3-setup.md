@@ -4,11 +4,13 @@ hideInToc: false
 ---
 
 # Setup a ~~React (Native)~~ JavaScript Project
+
 ## Creating your project environment
 
 ---
 
 # Setup
+
 - Most of this applies to any kind of JavaScript project
 - Some of this applies to React and React Native
 - Some only applies to React Native
@@ -54,37 +56,28 @@ type CheckboxGroupProps<T extends string> = {
   onChange: (option: T) => void;
 } & (
   | {
-    i18n: Record<T, string>;
-    optionLabel?: never;
-  }
-  | { 
-    i18n?: never; 
-    optionLabel: FunctionComponent<{ option: T }> 
-  }
+      i18n: Record<T, string>;
+      optionLabel?: never;
+    }
+  | {
+      i18n?: never;
+      optionLabel: FunctionComponent<{ option: T }>;
+    }
 );
 ```
 
 </div>
 <div>
 
-
 ```tsx
-export function CheckboxGroup<T extends string>({
-  values,
-  i18n,
-  optionLabel,
-  onChange,
-}: CheckboxGroupProps<T>) {
+export function CheckboxGroup<T extends string>({ values, i18n, optionLabel, onChange }: CheckboxGroupProps<T>) {
   return (
     <Box role="group">
       <List>
         {Object.keys(options).map((option) => (
           <ListItem key={option}>
             <Checkbox
-              label={(
-                i18n && i18n[option]) || 
-                (optionLabel && optionLabel({ option })
-              )}
+              label={(i18n && i18n[option]) || (optionLabel && optionLabel({ option }))}
               checked={values[option]}
               onChange={() => onChange(option)}
             />
@@ -95,6 +88,7 @@ export function CheckboxGroup<T extends string>({
   );
 }
 ```
+
 </div>
 </div>
 
@@ -110,21 +104,21 @@ export function CheckboxGroup<T extends string>({
   - Cleaner imports
   - Less churn when moving files
 
-
 ```diff
 - import Component from '../../components/Component';
 + import Component from '@/components/Component';
 ```
 
 <!-- Footer -->
+
 [^1]: https://docs.expo.dev/router/reference/src-directory/
 
 ---
 
 # Setup Path Alias
 
-
 `tsconfig.json`[^1]
+
 ```json
 "compilerOptions": {
   "baseUrl": ".",
@@ -135,6 +129,7 @@ export function CheckboxGroup<T extends string>({
 ```
 
 `.eslintrc`
+
 ```js
 'no-restricted-imports': ['error',
   { patterns: [
@@ -147,6 +142,7 @@ export function CheckboxGroup<T extends string>({
 ```
 
 <!-- Footer -->
+
 [^1]: https://docs.expo.dev/guides/typescript/#path-aliases
 
 ---
@@ -172,13 +168,15 @@ export default config;
 ```
 
 <!-- Footer -->
+
 [^1]: https://docs.expo.dev/guides/typescript/#appconfigjs
 
 ---
 
 # Use a tight ESLint Config
 
-[//]: # (TODO SCROLL)
+[//]: # 'TODO SCROLL'
+
 ```js {2|10-28|29-55}{maxHeight:'100%'}
 module.exports = {
   extends: ['airbnb', 'airbnb/hooks', 'airbnb-typescript', 'prettier'],
@@ -221,7 +219,7 @@ module.exports = {
     ],
 
     'padding-line-between-statements': ['error', { blankLine: 'always', prev: '*', next: 'return' }],
-      
+
     'no-param-reassign': ['error', { props: false }],
 
     'react/function-component-definition': [
@@ -236,7 +234,6 @@ module.exports = {
     'react/require-default-props': 'off',
   },
 };
-
 ```
 
 ---
@@ -244,6 +241,7 @@ module.exports = {
 # Setup your linting scripts
 
 `package.json.scripts`
+
 ```json
 "lint": "npm run lint:tsc && npm run lint:eslint",
 "lint:tsc": "tsc --noemit",
@@ -268,6 +266,7 @@ Strict Mode enables the following development-only behaviors: [^1]
 **All of these checks are development-only and do not impact the production build.**
 
 In your most root file (`index.tsx`, `App.tsx`, `_layout.tsx`):
+
 ```tsx
 <React.StrictMode>
   <App />
@@ -275,6 +274,7 @@ In your most root file (`index.tsx`, `App.tsx`, `_layout.tsx`):
 ```
 
 <!-- Footer -->
+
 [^1]: https://react.dev/reference/react/StrictMode#strictmode
 
 ---
@@ -284,6 +284,7 @@ transition: slide-left
 # Let's view at your Setup as a Mob
 
 Mob programming:
+
 - 1 driver has the keyboard
 - 1 navigator makes the decisions
 - The whole mobs discusses together

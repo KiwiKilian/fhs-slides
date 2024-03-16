@@ -20,7 +20,9 @@ fonts:
 ---
 
 # Frontend Engineering
-## A practical guide to React (Native) 
+
+## A practical guide to React (Native)
+
 FHS 2024 SS MMT-M – [Kilian Finger](https://www.kilianfinger.com/)
 
 ---
