@@ -1,0 +1,33 @@
+# HTTPS & WWW
+RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule (.*) https://slides.kilianfinger.com%{REQUEST_URI} [L,NE,R=301]
+
+# SPA Redirects
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# Caching
+FileETag MTime Size
+
+<filesMatch ".(html)$">
+Header set Cache-Control "max-age=86400, public"
+</filesMatch>
+
+<filesMatch ".(css|js|jpg|jpeg|png|webp|avif|svg|gif|ico|woff|woff2)$">
+Header set Cache-Control "max-age=8640000, public"
+</filesMatch>
+
+# Gzip
+AddEncoding gzip .gzip
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE image/svg+xml
+
+# 404
+ErrorDocument 404 /404.html
