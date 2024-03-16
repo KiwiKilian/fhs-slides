@@ -13,7 +13,10 @@ defaults:
   hideInToc: true
 transition: slide-up
 title: Frontend Engineering – Kilian Finger – 2024
+favicon: /assets/favicon.svg
 mdc: true
+fonts:
+  provider: none
 ---
 
 # Frontend Engineering
