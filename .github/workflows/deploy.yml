@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: ls -la
+      - run: pwd
+
       - uses: actions/setup-node@v4
         with:
           cache: npm
