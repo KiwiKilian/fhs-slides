@@ -17,6 +17,7 @@ favicon: /assets/favicon.svg
 mdc: true
 fonts:
   provider: none
+download: true
 ---
 
 # Frontend Engineering
