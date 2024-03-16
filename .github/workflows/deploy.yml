@@ -22,7 +22,7 @@ jobs:
       matrix: { directory: [ '2024-ss-mmt-m-frontend-engineering' ] }
     defaults:
       run:
-        working-directory: ./${{ matrix.directory }}
+        working-directory: ${{ matrix.directory }}
 
     steps:
       - uses: actions/checkout@v4
