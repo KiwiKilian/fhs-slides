@@ -18,6 +18,7 @@
   "devDependencies": {
     "@kiwikilian/prettier-config": "1.0.1",
     "@types/react": "18.2.64",
+    "playwright-chromium": "1.42.1",
     "prettier": "3.2.5",
     "prettier-plugin-slidev": "1.0.5"
   }
