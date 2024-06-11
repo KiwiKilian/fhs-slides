@@ -75,6 +75,7 @@ hideInToc: false
 <!-- Footer -->
 
 [^1]: https://reactnative.dev/docs/javascript-environment
+
 [^2]: https://hermesengine.dev/docs/language-features
 
 ---
