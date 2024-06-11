@@ -9,17 +9,15 @@
     "prettier": "prettier --write \"**/*.md\""
   },
   "dependencies": {
-    "@slidev/cli": "0.48.0-beta.26",
-    "@slidev/theme-apple-basic": "0.25.0",
-    "@slidev/theme-default": "latest",
-    "@slidev/theme-seriph": "latest",
-    "vue": "3.4.21"
+    "@slidev/cli": "0.49.10",
+    "@slidev/theme-apple-basic": "0.25.1",
+    "vue": "3.4.27"
   },
   "devDependencies": {
     "@kiwikilian/prettier-config": "1.0.1",
-    "@types/react": "18.2.64",
-    "playwright-chromium": "1.42.1",
-    "prettier": "3.2.5",
+    "@types/react": "18.3.3",
+    "playwright-chromium": "1.44.1",
+    "prettier": "3.3.2",
     "prettier-plugin-slidev": "1.0.5"
   }
 }
