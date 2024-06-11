@@ -1,0 +1,13 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    assignees: [KiwiKilian]
+
+  - package-ecosystem: npm
+    directory: /2024-ss-mmt-m-frontend-engineering/
+    schedule:
+      interval: weekly
+    assignees: [KiwiKilian]
