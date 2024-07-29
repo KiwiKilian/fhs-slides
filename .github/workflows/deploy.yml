@@ -48,7 +48,7 @@ jobs:
       - name: Build
         run: npm run build -- --base /fhs-${{ matrix.directory }}/
 
-      - uses: easingthemes/ssh-deploy@v5.0.3
+      - uses: easingthemes/ssh-deploy@v5.1.1
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-avh --delete'
