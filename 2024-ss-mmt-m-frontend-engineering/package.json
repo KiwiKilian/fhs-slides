@@ -11,7 +11,7 @@
   "dependencies": {
     "@slidev/cli": "0.49.10",
     "@slidev/theme-apple-basic": "0.25.1",
-    "vue": "3.4.27"
+    "vue": "3.4.35"
   },
   "devDependencies": {
     "@kiwikilian/prettier-config": "1.0.1",
