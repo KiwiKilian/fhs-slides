@@ -1,0 +1,22 @@
+{
+  "name": "fhs-2024-ws-mmt-m-guest-lecture-web-engineering",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "slidev",
+    "build": "slidev build",
+    "export": "slidev export",
+    "prettier": "prettier --write \"**/*.md\""
+  },
+  "dependencies": {
+    "@slidev/cli": "0.49.29",
+    "vue": "3.5.7"
+  },
+  "devDependencies": {
+    "@kiwikilian/prettier-config": "1.0.1",
+    "@types/react": "18.3.8",
+    "playwright-chromium": "1.47.2",
+    "prettier": "3.3.3",
+    "prettier-plugin-slidev": "1.0.5"
+  }
+}
