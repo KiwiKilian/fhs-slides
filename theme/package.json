@@ -1,0 +1,33 @@
+{
+  "name": "@kiwikilian/slidev-theme-fhs",
+  "version": "0.0.0",
+  "type": "module",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "slidev build example.md",
+    "dev": "slidev example.md --open",
+    "export": "slidev export example.md",
+    "screenshot": "slidev export example.md --format png"
+  },
+  "slidev": {
+    "colorSchema": "both",
+    "highlighter": "shiki",
+    "defaults": {
+      "fonts": {
+        "provider": "none"
+      }
+    }
+  },
+  "dependencies": {
+    "@slidev/types": "0.49.29"
+  },
+  "devDependencies": {
+    "@slidev/cli": "0.49.29"
+  }
+}

@@ -1,0 +1,83 @@
+:root {
+    /* default theme color */
+    /* can be overrided by uses `themeConfig` option */
+    /*--slidev-theme-primary: #5d8392;*/
+}
+
+/*.slidev-layout.cover,*/
+/*.slidev-layout.intro {*/
+/*  @apply h-full grid;*/
+
+/*  h1 {*/
+/*    @apply text-6xl leading-20;*/
+/*  }*/
+
+/*  h1 + p {*/
+/*    @apply -mt-2 opacity-50 mb-4;*/
+/*  }*/
+
+/*  p + h2,*/
+/*  ul + h2,*/
+/*  table + h2 {*/
+/*    @apply mt-10;*/
+/*  }*/
+/*}*/
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../assets/fonts/gilroy/gilroy-extrabold-webfont.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/gilroy-extrabold-webfont.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Silka';
+    src: url('../assets/fonts/silka/silka-regular-webfont.eot');
+    src: url('../assets/fonts/silka/silka-regular-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/silka/silka-regular-webfont.woff2') format('woff2'),
+    url('../assets/fonts/silka/silka-regular-webfont.woff') format('woff'),
+    url('../assets/fonts/silka/silka-regular-webfont.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+.slidev-layout {
+    font-family: Silka, sans-serif;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: Gilroy, sans-serif;
+        font-weight: 900;
+    }
+}
+
+.slidev-layout.intro {
+    @apply h-full;
+
+    h1 {
+        @apply text-6xl font-700 leading-20;
+    }
+
+    h1 + p {
+        @apply font-700 -mt-4 text-2xl;
+    }
+}
+
+.slidev-layout.quote {
+    h1 + p {
+        @apply mt-6 ml-6;
+    }
+}
+
+.slidev-layout.section {
+    h1 {
+        @apply text-6xl font-500 leading-20;
+    }
+}

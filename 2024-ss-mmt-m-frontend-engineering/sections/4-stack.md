@@ -12,8 +12,7 @@ layout: quote
 ---
 
 # If the only tool you have is a hammer, it is tempting to treat everything as if it were a nail.
-
-## Maslow's Hammer – Abraham Maslow, 1966
+Maslow's Hammer – Abraham Maslow, 1966
 
 ---
 

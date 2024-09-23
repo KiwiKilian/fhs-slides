@@ -1,23 +1,15 @@
 ---
-theme: apple-basic
-background: https://source.unsplash.com/collection/94734566/1920x1080
-layout: intro
-highlighter: shiki
-lineNumbers: false
+theme: ../theme
+favicon: ../theme/assets/favicon.svg
+title: Frontend Engineering – Kilian Finger – 2024
 info: |
   # Frontend Engineering
   ## [Kilian Finger](https://www.kilianfinger.com/) – 2024
-drawings:
-  persist: false
-defaults:
+download: true
+defaults: 
   hideInToc: true
 transition: slide-up
-title: Frontend Engineering – Kilian Finger – 2024
-favicon: /assets/favicon.svg
-mdc: true
-fonts:
-  provider: none
-download: true
+layout: intro
 ---
 
 # Frontend Engineering
