@@ -48,6 +48,32 @@ export class CreateUserDto {
 }
 ```
 
+---
+
+# Example: GeoJSON
+
+```ts
+import { ApiProperty } from '@nestjs/swagger';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNumber, IsString, Max, Min } from 'class-validator';
+import { Point } from 'geojson';
+
+export class PointDto implements Point {
+  @IsString()
+  @ApiProperty({ oneOf: [{ type: 'string', enum: ['Point'] }] })
+  type: 'Point';
+
+  @IsArray()
+  @ArrayMinSize(2)
+  @ArrayMaxSize(2)
+  @IsNumber(undefined, { each: true })
+  @Min(-180, { each: true })
+  @Max(180, { each: true })
+  coordinates: number[];
+}
+```
+
+---
+
 ```ts
 @Post()
 initialize(@Body() createUserDto: CreateUserDto) {
@@ -64,18 +90,19 @@ Can also be used to validate (query) parameters:
 ```ts
 import { IsNumberString } from 'class-validator';
 
-export class FindOneParams {
-  @IsNumberString()
-  id: number;
+export class FindOneSearchParams {
+  @IsOptional()
+  @IsBoolean()
+  active?: boolean;
 }
 ```
 
 Controller:
 
 ```ts
-@Get(':id')
-findOne(@Param() params: FindOneParams) {
-  return 'This action returns a user';
+@Get()
+findAll(@Query() searchParams: FindOneSearchParams) {
+  return 'This action returns a users';
 }
 ```
 
@@ -84,6 +111,8 @@ transition: slide-left
 ---
 
 # Global Validation Pipe
+
+Add the `ValidationModule` to your `imports` in `AppModule`.
 
 ```ts
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common';
@@ -99,9 +128,7 @@ import { APP_PIPE } from '@nestjs/core';
           forbidNonWhitelisted: true,
           forbidUnknownValues: true,
           transform: true,
-          transformOptions: {
-            enableImplicitConversion: true,
-          },
+          transformOptions: { enableImplicitConversion: true },
           exceptionFactory: (errors) => new BadRequestException(errors),
         }),
     },

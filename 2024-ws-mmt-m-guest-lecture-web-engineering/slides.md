@@ -39,29 +39,50 @@ src: ./sections/1-nestjs.md
 ---
 
 ---
-src: ./sections/configuration.md
+src: ./sections/2-configuration.md
 ---
 
 ---
-src: ./sections/validation.md
+src: ./sections/3-validation.md
 ---
 
 ---
-src: ./sections/typeorm.md
+src: ./sections/4-typeorm.md
 ---
 
 ---
-src: ./sections/openapi.md
+src: ./sections/5-serialization.md
+---
+
+
+---
+src: ./sections/6-openapi.md
 ---
 
 ---
-src: ./sections/mail.md
+src: ./sections/7-authentication.md
 ---
 
 ---
-src: ./sections/techniques.md
+src: ./sections/8-authorization.md
 ---
 
+---
+src: ./sections/9-testing.md
+---
+
+---
+src: ./sections/10-mail.md
+---
+
+---
+src: ./sections/11-techniques.md
+---
+
+
+---
+src: ./sections/12-dockerfile.md
+---
 
 ---
 layout: center

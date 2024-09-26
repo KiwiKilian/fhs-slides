@@ -89,8 +89,41 @@ const job = await this.imageQueue.add('transform', {
 });
 ```
 
+[//]: # (TODO Consumer)
+
 ---
-transition: slide-left
+
+# Health
+
+Adding an health check endpoint for external monitoring:
+
+```ts
+@ApiTags('Health')
+@Controller('health')
+export class HealthController {
+  constructor(
+    private healthCheckService: HealthCheckService,
+    private typeOrmHealthIndicator: TypeOrmHealthIndicator,
+  ) {}
+
+  @Get()
+  @Public()
+  @HealthCheck()
+  check() {
+    return this.healthCheckService.check([() => this.typeOrmHealthIndicator.pingCheck('postgres')]);
+  }
+}
+```
+
+```json
+{
+  "status": "ok",
+  "info": { "postgres": { "status": "up" } },
+  "error": {},
+  "details": { "postgres": { "status": "up" } }
+}
+```
+
 ---
 
 # Logging
@@ -109,3 +142,17 @@ class MyService {
   }
 }
 ```
+
+---
+transition: slide-left
+---
+
+# Error Monitoring with Sentry
+
+- Monitor your errors
+  - Stacktraces
+  - Breadcrumbs
+- [SDK for NestJS](https://docs.sentry.io/platforms/javascript/guides/nestjs/) currently in beta
+- Note: US service requires privacy consideration
+
+<img width="600" src="/assets/sentry.png">
