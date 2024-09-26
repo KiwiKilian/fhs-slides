@@ -208,6 +208,7 @@ transition: slide-left
 
 - Important for a great development flow is example data
 - Current best option is [@jorgebodega/typeorm-seeding](https://github.com/jorgebodega/typeorm-seeding)
+- Run with `npm run typeorm-seeding seed src/seeds/admins.seeder.ts`
 
 ```ts
 export class AdminsSeeder extends Seeder {

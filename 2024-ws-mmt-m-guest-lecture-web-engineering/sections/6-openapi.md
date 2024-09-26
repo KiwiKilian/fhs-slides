@@ -9,10 +9,10 @@ hideInToc: false
 
 # Why OpenAPI?
 
-- OpenAPI specs describe you endpoints, parameters, bodies, responses
+- OpenAPI specs describes endpoints, parameters, bodies, responses, models
 - Documentation for you API
-- Can be used to generate clients in countless languages
-- Compared to other type safe API variants, this is the most portable and available for all language (API and client alike)
+- Can be used to generate clients in many languages
+- Compared to other type safe API variants, this is the most portable and available for all common languages (API and client alike)
 
 ---
 
@@ -54,8 +54,8 @@ bootstrap();
 
 # Parameters
 
-- Reads Method, `@Body()`, `@Query()`, and `@Param()` in controllers
-- Add specific responses with `@ApiResponse()`
+- Reads HTTP Method, `@Body()`, `@Query()`, and `@Param()` in controllers
+- Optional: Add specific responses with `@ApiResponse()`
 
 ```ts
 @Post()
@@ -65,6 +65,10 @@ async create(@Body() createCatDto: CreateCatDto) {
   this.catsService.create(createCatDto);
 }
 ```
+
+---
+
+# Body
 
 - Decorate your DTOs with `@ApiProperty()`
 

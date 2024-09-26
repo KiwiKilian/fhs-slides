@@ -112,7 +112,7 @@ transition: slide-left
 
 # Global Validation Pipe
 
-Add the `ValidationModule` to your `imports` in `AppModule`.
+- Add this `ValidationModule` to `imports` in `AppModule` to globally apply
 
 ```ts
 import { BadRequestException, Module, ValidationPipe } from '@nestjs/common';
