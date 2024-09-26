@@ -1,6 +1,6 @@
 ---
-theme: ../theme
-favicon: ../theme/assets/favicon.svg
+theme: '@kiwikilian/slidev-theme-fhs'
+favicon: node_modules/@kiwikilian/slidev-theme-fhs/assets/favicon.svg
 title: Guest Lecture Web Engineering – Kilian Finger – 2024
 info: |
   # Guest Lecture Web Engineering

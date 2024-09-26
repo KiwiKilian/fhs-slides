@@ -2,13 +2,6 @@
   "name": "@kiwikilian/slidev-theme-fhs",
   "version": "0.0.0",
   "type": "module",
-  "keywords": [
-    "slidev-theme",
-    "slidev"
-  ],
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "scripts": {
     "build": "slidev build example.md",
     "dev": "slidev example.md --open",

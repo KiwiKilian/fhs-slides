@@ -1,7 +1,7 @@
 name: Deploy
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch: { }
   push:
     branches:
       - main
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      matrix: { directory: [ '2024-ss-mmt-m-frontend-engineering' ] }
+      matrix: { directory: [ '2024-ss-mmt-m-frontend-engineering', '2024-ws-mmt-m-guest-lecture-web-engineering' ] }
 
     environment:
       name: production
@@ -49,7 +49,7 @@ jobs:
         run: npm run build -- --base /fhs-${{ matrix.directory }}/
 
       - uses: easingthemes/ssh-deploy@v5.1.1
-        env:
+        with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: '-avh --delete'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
