@@ -11,3 +11,9 @@ updates:
     schedule:
       interval: weekly
     assignees: [KiwiKilian]
+
+  - package-ecosystem: npm
+    directory: /2024-ws-mmt-m-guest-lecture-web-engineering/
+    schedule:
+      interval: weekly
+    assignees: [KiwiKilian]
