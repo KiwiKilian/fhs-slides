@@ -7,13 +7,9 @@ updates:
     assignees: [KiwiKilian]
 
   - package-ecosystem: npm
-    directory: /2024-ss-mmt-m-frontend-engineering/
-    schedule:
-      interval: weekly
-    assignees: [KiwiKilian]
-
-  - package-ecosystem: npm
-    directory: /2024-ws-mmt-m-guest-lecture-web-engineering/
+    directories:
+      - /2024-ss-mmt-m-frontend-engineering/
+      - /2024-ws-mmt-m-guest-lecture-web-engineering/
     schedule:
       interval: weekly
     assignees: [KiwiKilian]
