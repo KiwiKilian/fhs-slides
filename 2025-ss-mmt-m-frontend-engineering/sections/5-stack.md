@@ -554,7 +554,9 @@ queryClient.invalidateQueries({
 - Create `fetch` methods for you
 - Create an API contract
   - OpenAPI spec must be strictly matching your actual sent data
-  - Can make versioning obsolete
-- [`openapi-typescript-codegen`](https://github.com/ferdikoomen/openapi-typescript-codegen)
+  - Can make versioning easier/obsolete
+- [`@hey-api/openapi-ts`](https://github.com/hey-api/openapi-ts)
+  - React Query plugin
+  - Zod plugin
 - [`oazapfts`](https://github.com/oazapfts/oazapfts)
 - Many more...

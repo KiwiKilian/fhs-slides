@@ -19,7 +19,7 @@ hideInToc: false
 
 # Use TypeScript
 
-- Easy setup in React (Native)
+- Easy setup in React (Native), becoming the default
 - Most libraries in the React ecosystem support TypeScript very well
 - Makes working with props and refactorings very easy
 - If not absolutely new to TypeScript: Enable `strict` mode
@@ -173,72 +173,9 @@ export default config;
 
 ---
 
-# Use a tight ESLint Config
-
-[//]: # 'TODO SCROLL'
-
-```js {2|10-28|29-55}{maxHeight:'100%'}
-module.exports = {
-  extends: ['airbnb', 'airbnb/hooks', 'airbnb-typescript', 'prettier'],
-
-  parserOptions: { project: './tsconfig.json' },
-
-  root: true,
-
-  ignorePatterns: ['.eslintrc.js'],
-
-  rules: {
-    'id-denylist': ['error', 'cb', 'e', 'err', 'ev', 'i', 'j', 'val'],
-
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      { js: 'never', jsx: 'never', ts: 'never', tsx: 'never', '': 'never' },
-    ],
-    'import/no-default-export': 'error',
-    'import/order': [
-      'error',
-      {
-        'newlines-between': 'always',
-        groups: [['builtin', 'external', 'internal']],
-        alphabetize: { order: 'asc', orderImportKind: 'asc' },
-      },
-    ],
-    'import/prefer-default-export': 'off',
-
-    'no-restricted-imports': [
-      'error',
-      {
-        patterns: [
-          {
-            group: ['./', '../'],
-            message: "Use '@/...' alias instead.",
-          },
-        ],
-      },
-    ],
-
-    'padding-line-between-statements': ['error', { blankLine: 'always', prev: '*', next: 'return' }],
-
-    'no-param-reassign': ['error', { props: false }],
-
-    'react/function-component-definition': [
-      'error',
-      {
-        namedComponents: 'function-declaration',
-        unnamedComponents: 'function-expression',
-      },
-    ],
-    'react/jsx-key': 'error',
-    'react/jsx-props-no-spreading': 'off',
-    'react/require-default-props': 'off',
-  },
-};
-```
-
----
-
 # Setup your linting scripts
+
+- RN and Expo come with ESLint pre-configured
 
 `package.json.scripts`
 

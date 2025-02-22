@@ -12,7 +12,12 @@ hideInToc: false
 # Hybrid Apps
 
 - Apps from one codebase which compile to multiple targets
-  - Android, iOS, Web, Windows, macOS...
+  - Android
+  - iOS
+  - Web
+  - Windows
+  - macOS
+  - ...
 - Faster development through writing less code 👍
 
 ---
@@ -25,7 +30,9 @@ hideInToc: false
 - Often don't feel "native" 👎
 - Performance limitations 👎
 - Weird approaches like a native view behind the webview 👎
-- Frameworks: PhoneGap/Cordova, Ionic
+- Frameworks:
+  - PhoneGap/Cordova
+  - Ionic
 
 ---
 
@@ -37,7 +44,18 @@ hideInToc: false
 - Access to native code through bridges (foreign function interface) or similar 👍
 - Dependency to framework between your app and native platform 👎
 - It's still an app bend to multiple platforms `¯\_(ツ)_/¯`
-- Frameworks: .NET MAUI, Flutter, React Native
+- Frameworks:
+  - .NET MAUI
+  - Flutter
+  - React Native
+
+---
+layout: quote
+---
+
+# React Native allows developers who know React to create native apps. At the same time, native developers can use React Native to gain parity between native platforms by writing common features once.
+
+[reactnative.dev](https://reactnative.dev/docs/environment-setup)
 
 ---
 
@@ -49,7 +67,8 @@ hideInToc: false
 - Define your UI in JSX syntax
   - RN instead of manipulating a browser DOM will create and update native UI elements for you
 - Build your app completely or partially using React
-  - You could mix with native screens
+  - Mix with native screens with React Native screens
+  - Integrate with brown field apps
 
 ---
 
@@ -77,6 +96,24 @@ hideInToc: false
 [^1]: https://reactnative.dev/docs/javascript-environment
 
 [^2]: https://hermesengine.dev/docs/language-features
+
+---
+
+# [New Architecture](https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here)
+
+- Complete rewrite of the major systems that underpin React Native
+  - Component rendering
+  - Communication between JS and Native
+  - Work scheduling across different threads
+- Old architecture
+  - Only allowed asynchronous native interactions
+  - Required serialization for data exchange through bridge
+- Full support of modern React features
+  - Suspense
+  - Transitions
+- Type-safety between JS and native code
+- Comes with many performance improvements
+- Released at the end of 2024
 
 ---
 
@@ -110,7 +147,7 @@ layout: two-cols
 
 # Styling & Layout
 
-- Only supports a basic subset of CSS
+- Only supports a subset of CSS
 - Styles are written as objects with style names written in camel-case
 - Limited cascade
 - Common basics like `margin`, `padding`, `border`, `color`, `backgroundColor`...
@@ -124,12 +161,12 @@ layout: two-cols
 
 ---
 
-# Which libraries from a SPA can be used in RN?
+# Which libraries can be used in RN?
 
 - UI Libraries/Components for the web <v-click>❌</v-click>
   - MUI, Spectrum...
 - CSS Frameworks <v-click>❌</v-click>
-  - shadcn/ui, Bootstrap, Tailwind...
+  - shadcn/ui, Bootstrap, Tailwind... <v-click>(some have native pendants)</v-click>
 - Anything headless for React <v-click>✅</v-click>
   - TanStack Query/Table, Apollo, zustand, Redux...
 - Any plain logic JS library <v-click>✅</v-click>
@@ -144,47 +181,34 @@ layout: two-cols
   - Can transfer many patterns from web to native and other way around
 - Shared code, faster development
 - Hot reloading, faster development
-- Large ecosystem of native plugins/libraries which solve most native problems (which me, as a web developer, doesn't want to touch myself)
+- Large ecosystem of native plugins/libraries which solve most native problems (which me, as a web developer, doesn't want to touch myself 🫠)
 
 ---
-
-# Expo
-
-- A meta framework (not facebook!) build upon React Native (yes, facebook...)
-  - Like Next.js and Remix for React
-- React Native delivers only the foundation to build apps for multiple platforms
-- Expo brings a whole SDK of native libraries, toolchain and development flows
-
+layout: iframe
+url: https://reactnative.dev/showcase
 ---
-
-# Expo SDK
-
-The SDK has libraries to solve problems like the following:
-
-- Where is my user located (GPS)?
-- What's the users device battery level?
-- Keep the screen awake
-- Get access to the file system/camera/haptics...
-
-Can probably solve most of the problems why you've decided to create a native app over a web app
-
----
-
-# Expo Go
-
-- App freely available on iOS and Android
-- Development client
-- Includes the complete current Expo SDK
-- Native code is "fixed", you can only change the JavaScript
 
 ---
 transition: slide-left
 ---
 
-# What if I need custom native Code?
+# Setup a bare React Native Project[^1]
 
-Build your own dev client with development builds:
+- Node.js
+- Watchman
+- Xcode (requires macOS)
+  - Simulator
+  - Cocoapods
+- Android Studio
+  - Java Development Kit
+  - Android SDK, Emulator
 
-> By using development builds instead of Expo Go, you gain full control over the native runtime, so you can install any native libraries, modify any project configuration, or write your own native code.
+Creating your project:
 
-This creates you own native SDK instead of using Expo Go.
+```bash
+npx @react-native-community/cli@latest init
+```
+
+<!-- Footer -->
+
+[^1]: https://reactnative.dev/docs/set-up-your-environment

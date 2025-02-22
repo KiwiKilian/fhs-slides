@@ -36,15 +36,15 @@ src: ./sections/2-react-native.md
 ---
 
 ---
-src: ./sections/3-setup.md
+src: ./sections/3-expo.md
 ---
 
 ---
-src: ./sections/4-stack.md
+src: ./sections/4-setup.md
 ---
 
 ---
-src: ./sections/5-geospatial.md
+src: ./sections/5-stack.md
 ---
 
 ---
