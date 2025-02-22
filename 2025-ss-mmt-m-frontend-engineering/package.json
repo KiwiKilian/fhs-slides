@@ -1,0 +1,23 @@
+{
+  "name": "fhs-2025-ss-mmt-m-frontend-engineering",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "slidev",
+    "build": "slidev build",
+    "export": "slidev export",
+    "prettier": "prettier --write \"**/*.md\""
+  },
+  "dependencies": {
+    "@kiwikilian/slidev-theme-fhs": "file:../theme",
+    "vue": "3.5.13"
+  },
+  "devDependencies": {
+    "@kiwikilian/prettier-config": "1.0.1",
+    "@slidev/cli": "0.49.29",
+    "@types/react": "19.0.10",
+    "playwright-chromium": "1.50.1",
+    "prettier": "3.5.2",
+    "prettier-plugin-slidev": "1.0.5"
+  }
+}
