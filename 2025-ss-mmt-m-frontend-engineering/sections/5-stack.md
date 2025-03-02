@@ -12,6 +12,7 @@ layout: quote
 ---
 
 # If the only tool you have is a hammer, it is tempting to treat everything as if it were a nail.
+
 Maslow's Hammer – Abraham Maslow, 1966
 
 ---
@@ -426,8 +427,6 @@ Same recommendations as for `useState` apply:
 - Create new [objects](https://react.dev/learn/updating-objects-in-state#recap)/[arrays](https://react.dev/learn/updating-arrays-in-state#recap)
 - Alternatively use [`immer`](https://github.com/immerjs/immer)
 
-**Homework?**
-
 ---
 
 # Small, predictable, no magic
@@ -545,18 +544,31 @@ queryClient.invalidateQueries({
 
 ---
 
+# API type-safety
+
+- How do we get types for our APIs?
+  - Available endpoints
+  - Request path, params, body
+  - Response body
+- Manual types are error-prone
+- Different approaches available:
+  - `tRPC`
+  - GraphQL
+  - Generating clients from OpenAPI specs
+
+---
+
 # Generate your API Clients
 
 - Build your APIs with [OpenAPI](https://www.openapis.org/) specs
   - Example: https://editor.swagger.io/
-- Generate API clients with TypeScript
-- Gets your models as types to the client
+  - Wildly available in all common backend languages/frameworks
+- Generate API clients for use in TypeScript
 - Create `fetch` methods for you
-- Create an API contract
+- API contract
   - OpenAPI spec must be strictly matching your actual sent data
   - Can make versioning easier/obsolete
 - [`@hey-api/openapi-ts`](https://github.com/hey-api/openapi-ts)
   - React Query plugin
   - Zod plugin
-- [`oazapfts`](https://github.com/oazapfts/oazapfts)
-- Many more...
+- Many other libraries available

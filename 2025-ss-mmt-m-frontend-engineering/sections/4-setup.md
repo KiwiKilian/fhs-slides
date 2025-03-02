@@ -218,11 +218,8 @@ In your most root file (`index.tsx`, `App.tsx`, `_layout.tsx`):
 transition: slide-left
 ---
 
-# Let's view at your Setup as a Mob
+# Starting our Project Assignment
 
-Mob programming:
-
-- 1 driver has the keyboard
-- 1 navigator makes the decisions
-- The whole mobs discusses together
-- Roles switch every 10 to 15 Minutes
+- Create a project
+- Setup ESLint and Prettier
+- Play around with some native libraries like `expo-location` and `react-native-maps`

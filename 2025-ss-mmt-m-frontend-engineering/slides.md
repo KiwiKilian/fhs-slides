@@ -6,7 +6,7 @@ info: |
   # Frontend Engineering
   ## [Kilian Finger](https://www.kilianfinger.com/) – 2025
 download: true
-defaults: 
+defaults:
   hideInToc: true
 transition: slide-up
 layout: intro
@@ -46,6 +46,46 @@ src: ./sections/4-setup.md
 ---
 src: ./sections/5-stack.md
 ---
+
+---
+
+# Assignment
+
+Create a routing app with the following features:
+
+- Input for origin and destination (Photon API)
+- Fetch route from origin to destination (OSRM API)
+- Display the calculated route on a map
+- Implement these features for bonus points:
+  - Add current location button for origin/destination
+    - Use Photon reverse geocoding to display name of location
+    - Add current location as bias to geocoding
+  - Save/load favorite locations or routers using zustand with persist through AsyncStorage
+    - Also store origin/destination in AsyncStorage
+
+Full assignment on the wiki!
+
+---
+
+# Assignment Setup
+
+- Start with a TypeScript template
+
+```bash
+$ npx create-expo-app@latest --template
+? Choose a template: › - Use arrow-keys. Return to submit.
+    Default
+    Blank
+❯   Blank (TypeScript)
+❯   Navigation (TypeScript) - File-based routing with TypeScript enabled
+    Blank (Bare)
+```
+
+- Setup ESLint and Prettier: https://docs.expo.dev/guides/using-eslint/
+- Setup [`@heyapi/openapi-ts`](https://github.com/hey-api/openapi-ts)
+  - Routing: https://github.com/1papaya/osrm-openapi/blob/master/osrm-openapi.yaml
+  - Geocoding: https://gist.github.com/KiwiKilian/1f9d35544a7e9312bb74bd75a889df9c
+- Setup [`@tanstack/react-query`](https://tanstack.com/query/latest/docs/framework/react/installation)
 
 ---
 layout: center

@@ -189,6 +189,29 @@ url: https://reactnative.dev/showcase
 ---
 
 ---
+
+# Structure
+
+```
+my-app/
+│-- android/      # Native Android code
+│-- ios/          # Native iOS code
+│-- src/          # JS/TS code
+│-- assets/       # Images, fonts, etc.
+│-- index.js      # Entry point
+```
+
+- `android`/`ios` directories contain each a native project
+- `src` has the shared React code
+
+## Config files
+
+- `app.json` – App metadata
+- `babel.config.js` – Babel setup
+- `metro.config.js` – Bundler config
+- `.gitignore` – Ignore files in Git
+
+---
 transition: slide-left
 ---
 

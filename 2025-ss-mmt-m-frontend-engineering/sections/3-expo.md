@@ -141,3 +141,9 @@ If you only want to use Expo Go, just install on your smartphone and get started
 ```bash
 npx create-expo-app@latest
 ```
+
+Choose a template with:
+
+```bash
+npx create-expo-app@latest --template
+```
