@@ -544,6 +544,38 @@ queryClient.invalidateQueries({
 
 ---
 
+# `useQueries`
+
+- How to run `useQuery` for an array of requests
+- For example if you have an array of dynamic requests
+- Each returned item in the array has it's one loading state etc...
+
+```ts
+const [dates, setDates] = useState(['2025-03-03', '2025-03-04', '2025-03-05']);
+
+const results = useQueries(
+  dates.map((date) => ({
+    queryKey: ['date', date],
+    queryFn: () => requestForDate(date),
+  })),
+);
+const [yesterday, today, tomorrow] = results;
+```
+
+---
+
+# Transforming Responses
+
+https://tkdodo.eu/blog/react-query-data-transformations
+
+---
+
+# `useMutation`
+
+https://tanstack.com/query/latest/docs/framework/react/guides/mutations
+
+---
+
 # API type-safety
 
 - How do we get types for our APIs?
@@ -572,3 +604,9 @@ queryClient.invalidateQueries({
   - React Query plugin
   - Zod plugin
 - Many other libraries available
+
+---
+layout: center
+---
+
+# Let's explore some real world use cases!

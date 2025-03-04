@@ -125,8 +125,6 @@ Cloud services for Expo and React Native apps, offering:
 <img src="/assets/expo-development-loop.png" class="m-auto" style="max-height: 380px"/>
 
 ---
-transition: slide-left
----
 
 # Setup an Expo project
 
@@ -147,3 +145,14 @@ Choose a template with:
 ```bash
 npx create-expo-app@latest --template
 ```
+
+---
+transition: slide-left
+---
+
+# Start your assignment
+
+- Create a button (`Pressable` or `TouchableOpacity`)
+  - Try to style it!
+- Use `expo-location` to retrieve the current location
+- Display the location in an `Alert`
