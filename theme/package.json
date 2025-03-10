@@ -18,9 +18,9 @@
     }
   },
   "dependencies": {
-    "@slidev/types": "0.49.29"
+    "@slidev/types": "51.4.0"
   },
   "devDependencies": {
-    "@slidev/cli": "0.49.29"
+    "@slidev/cli": "51.4.0"
   }
 }
