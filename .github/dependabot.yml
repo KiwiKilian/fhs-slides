@@ -11,6 +11,7 @@ updates:
       - /2024-ss-mmt-m-frontend-engineering/
       - /2024-ws-mmt-m-guest-lecture-web-engineering/
       - /2025-ss-mmt-m-frontend-engineering/
+      - /2026-ss-mmt-m-frontend-engineering/
     schedule:
       interval: weekly
     assignees: [KiwiKilian]

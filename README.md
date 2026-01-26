@@ -1,5 +1,8 @@
 # FHS Slides for Lectures by [Kilian Finger](https://www.kilianfinger.com/)
 
+## 2026
+
+- [2026 SS MMT-M – Frontend Engineering](https://slides.kilianfinger.com/fhs-2026-ss-mmt-m-frontend-engineering)
 
 ## 2025
 
