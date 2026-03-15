@@ -5,7 +5,7 @@ transition: slide-left
 
 # Roadmap
 
-- 3 lecturers: Kristina? (CSS, 30 %), Jad? (Web Components, 30 %) and me (React, 40 %)
+- 3 lecturers: Kristina (CSS, 30 %), Jad (Web Components, 30 %) and me (React, 40 %)
 - Grading of my part:
   - Assignment project (90 %)
     - Create a routing app with Expo

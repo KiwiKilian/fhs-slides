@@ -564,15 +564,211 @@ const [yesterday, today, tomorrow] = results;
 
 ---
 
-# Transforming Responses
+# Transforming Responses[^1]
 
-https://tkdodo.eu/blog/react-query-data-transformations
+Where and how should you transform data from the backend into the shape your UI needs?
+
+|  | Approach | Runs on | Access to original |
+|---|---|---|---|
+| **0** | On the backend | – | ✅ |
+| **1** | In the `queryFn` | Every fetch | ❌ |
+| **2** | In the render function | Every render | ✅ |
+| **3** | `select` option ✅ | Data changed | ✅ |
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/react-query-data-transformations
 
 ---
 
-# `useMutation`
+# Transformation in `queryFn`[^1]
 
-https://tanstack.com/query/latest/docs/framework/react/guides/mutations
+Map the data before it reaches the cache – the original structure is no longer accessible:
+
+```ts {all|1-3|5-11|13-17}
+type Task = { id: number; text: string; done: boolean };
+// Backend returns snake_case – we want camelCase in the UI
+type TaskDTO = { id: number; task_text: string; is_done: boolean };
+
+const fetchTasks = async (): Promise<Task[]> => {
+  const response = await fetch('/api/tasks');
+  const data: TaskDTO[] = await response.json();
+  // Transform is stored in cache
+  return data.map(({ id, task_text, is_done }) => ({ id, text: task_text, done: is_done }));
+};
+
+export const useTasksQuery = () =>
+  useQuery({
+    queryKey: todoKeys.all,
+    queryFn: fetchTasks,
+  });
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/react-query-data-transformations
+
+---
+
+# Transformation with `select`[^1]
+
+The `select` option only runs when data actually changed and the selector is stable – ideal for partial subscriptions:
+
+```ts {all|1-6|8-10|12-15|16-20}
+// One shared base query – raw data stays in cache
+const useTasksQuery = <T>(select?: (data: Task[]) => T) =>
+  useQuery({
+    queryKey: todoKeys.all,
+    queryFn: fetchTasks,
+    select,
+  });
+
+// All tasks
+export const useTasks = () => useTasksQuery();
+
+// Only re-renders when the count changes
+export const useTasksCount = () =>
+  useTasksQuery((data) => data.length);
+
+// Only re-renders when this specific task changes
+export const useTask = (id: number) =>
+  useTasksQuery((data) => data.find((task) => task.id === id));
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/react-query-data-transformations
+
+---
+
+# `useMutation`[^1]
+
+- **Mutations** describe functions with side effects on the server (create, update, delete)
+- Tracks the same states as `useQuery`: `isPending`, `isError`, `isSuccess`
+- Key difference: **imperative, not declarative**
+  - `useQuery` runs automatically based on dependencies
+  - `useMutation` gives you a `mutate` function you call yourself
+
+```ts
+const addTask = useMutation({
+  mutationFn: (newTask: Task) =>
+    fetch('/tasks', { method: 'POST', body: JSON.stringify(newTask) }),
+})
+
+// call it whenever you want – e.g. on form submit
+addTask.mutate({ id: Date.now(), text: 'Buy milk', done: false })
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
+
+---
+
+# Tying Mutations to Queries[^1]
+
+After a mutation, the cached query data is stale. Two ways to sync it:
+
+```ts {all|1-12|14-25}{maxHeight:'100%'}
+// Invalidation, let React Query refetch
+const useAddTask = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (newTask: Task) =>
+      fetch('/tasks', { method: 'POST', body: JSON.stringify(newTask) }),
+    onSuccess: () => {
+      // return the promise so the mutation stays pending until refetch is done
+      return queryClient.invalidateQueries({ queryKey: todoKeys.all })
+    },
+  })
+}
+
+// Direct update, when the mutation response already contains the new data
+const useUpdateTask = (id: number) => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (updated: Task) =>
+      fetch(`/tasks/${id}`, { method: 'PATCH', body: JSON.stringify(updated) }).then((r) => r.json()),
+    onSuccess: (updatedTask) => {
+      // 💡 onSuccess receives the mutation response
+      queryClient.setQueryData(todoKeys.detail(id), updatedTask)
+    },
+  })
+}
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
+
+---
+
+# Separate Concerns in Callbacks[^1]
+
+`useMutation` callbacks fire **before** `mutate` callbacks. The `mutate` callbacks may **not fire** if the component unmounts:
+
+```ts
+// ✅ business / query logic → always runs, lives in the custom hook
+const useDeleteTask = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: number) => fetch(`/tasks/${id}`, { method: 'DELETE' }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: todoKeys.all }),
+  })
+}
+
+// ✅ UI logic → only runs if the component is still mounted
+const deleteTask = useDeleteTask()
+deleteTask.mutate(taskId, {
+  onSuccess: () => router.push('/tasks'),    // navigate away
+  onError: () => toast.error('Delete failed'),
+})
+```
+
+&rarr; Keep the custom hook reusable; let the call-site decide what happens in the UI
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
+
+
+---
+
+# Basic React Query Setup[^1]
+
+- Install with `npm install @tanstack/react-query`
+- Create one shared `QueryClient`
+- Wrap your app root with `QueryClientProvider`
+
+```tsx {all|4|5-15}{maxHeight:'100%'}
+// App.tsx or app/_layout.tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RootNavigator />
+    </QueryClientProvider>
+  );
+}
+```
+
+After this, `useQuery`, `useMutation` etc. are available everywhere below the provider.
+
+<!-- Footer -->
+
+[^1]: https://tanstack.com/query/latest/docs/framework/react/quick-start
+
+---
+
+# Setup in your assignment and query an API
+
+- Add a TextInput as a search field for a location
+- Query the Photon API using React Query:<br/>https://photon.komoot.io/api/?q=berlin
+- Render the results in a list
+- The results should automatically change when the input is changed
 
 ---
 
@@ -604,6 +800,57 @@ https://tanstack.com/query/latest/docs/framework/react/guides/mutations
   - React Query plugin
   - Zod plugin
 - Many other libraries available
+
+---
+layout: two-cols
+---
+
+# Plain
+
+```ts {all|1-4|6-10}{maxHeight:'100%'}
+const fetchTask = async (id: number) => {
+  const response = await fetch(`/tasks/${id}`);
+  return response.json();
+};
+
+export const useTask = (id: number) =>
+  useQuery({
+    queryKey: todoKeys.detail(id),
+    queryFn: () => fetchTask(id),
+  });
+```
+
+<v-clicks>
+
+- Full control, but more manual wiring, types omitted for brevity (!)
+- You write the request function and query wiring yourself
+- You pass `id` into both `queryKey` and `fetchTask`
+- Easy to drift when endpoints evolve
+
+</v-clicks>
+
+::right::
+
+# Generated
+
+```ts {all|1|3-8}{maxHeight:'100%'}
+import { getTaskOptions } from '@/client/@tanstack/react-query.gen';
+
+export const useTask = (id: number) =>
+  useQuery({
+    ...getTaskOptions({
+      path: { id },
+    }),
+  });
+```
+
+<v-clicks>
+
+- Less boilerplate in app code
+- `id` is passed once, generated options do the rest
+- Keep query options consistent across the team
+
+</v-clicks>
 
 ---
 layout: center

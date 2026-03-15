@@ -152,11 +152,11 @@ export function CheckboxGroup<T extends string>({ values, i18n, optionLabel, onC
 Brings type-safety to your config[^1]
 
 ```bash
-npm install ts-node --save-dev
+npm install tsx/cjs --save-dev
 ```
 
 ```ts
-import 'ts-node/register';
+import 'tsx/cjs';
 import { ExpoConfig } from 'expo/config';
 
 const config: ExpoConfig = {
@@ -175,20 +175,29 @@ export default config;
 
 # Setup your linting scripts
 
-- RN and Expo come with ESLint pre-configured
+Setup ESLint in Expo projects:
 
-`package.json.scripts`
+```bash
+npx expo lint
+```
+
+Unified linting scripts `package.json.scripts`:
 
 ```json
 "lint": "npm run lint:tsc && npm run lint:eslint",
 "lint:tsc": "tsc --noemit",
-"lint:eslint": "eslint './src/**/*.{ts,tsx}' --fix"
+"lint:eslint": "expo lint"
 ```
 
 - Keep those linters happy at all times on `main`/`develop`
   - Merge only with zero warnings and errors
   - Starting out loose takes more time in the end
 - Add CI/CD to enforce these
+
+---
+layout: iframe
+url: https://docs.expo.dev/guides/using-eslint/#prettier
+---
 
 ---
 
@@ -218,8 +227,9 @@ In your most root file (`index.tsx`, `App.tsx`, `_layout.tsx`):
 transition: slide-left
 ---
 
-# Starting our Project Assignment
+# Continue on your Assignment
 
-- Create a project
-- Setup ESLint and Prettier
-- Play around with some native libraries like `expo-location` and `react-native-maps`
+- Setup ESLint, Prettier, import aliases and React.StrictMode
+- Play around and check if your IDE and linters are working correctly
+  - For example `useEffect` should warn you about missing dependencies
+

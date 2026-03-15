@@ -140,19 +140,15 @@ If you only want to use Expo Go, just install on your smartphone and get started
 npx create-expo-app@latest
 ```
 
-Choose a template with:
-
-```bash
-npx create-expo-app@latest --template
-```
-
 ---
 transition: slide-left
 ---
 
-# Start your assignment
+# Start your Assignment
 
-- Create a button (`Pressable` or `TouchableOpacity`)
+- `npx create-expo-app@latest --template tabs`
+- Make sure to use Expo SDK 55, get the latest iOS cliente here:<br/>https://testflight.apple.com/join/GZJxxfUU
+- Create a button (`Pressable`)
   - Try to style it!
-- Use `expo-location` to retrieve the current location
-- Display the location in an `Alert`
+- Use `expo-location` to retrieve the current location on button press
+- Display the location in an `Alert` or if you are really fancy display it on a map using `react-native-maps` (included in Expo Go)
