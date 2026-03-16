@@ -147,7 +147,7 @@ transition: slide-left
 # Start your Assignment
 
 - `npx create-expo-app@latest --template tabs`
-- Make sure to use Expo SDK 55, get the latest iOS cliente here:<br/>https://testflight.apple.com/join/GZJxxfUU
+- Make sure to use Expo SDK 55, get the client here:<br/>https://expo.dev/go
 - Create a button (`Pressable`)
   - Try to style it!
 - Use `expo-location` to retrieve the current location on button press
