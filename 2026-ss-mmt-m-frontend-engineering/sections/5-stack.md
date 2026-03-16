@@ -441,7 +441,7 @@ Same recommendations as for `useState` apply:
 # Work on the assignment
 
 - Create a store with `zustand` for favorites
-- Persist that store into `AsyncStorage`
+- Persist that store into `@react-native-async-storage/async-storage`
 - Have a text input and a submit button to add a new favorite
 - Render the list of current favorites
 - Allow removing favorites from the list
