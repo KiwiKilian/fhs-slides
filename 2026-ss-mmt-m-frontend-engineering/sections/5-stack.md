@@ -437,6 +437,16 @@ Same recommendations as for `useState` apply:
 - Highly extensible
 
 ---
+
+# Work on the assignment
+
+- Create a store with `zustand` for favorites
+- Persist that store into `AsyncStorage`
+- Have a text input and a submit button to add a new favorite
+- Render the list of current favorites
+- Allow removing favorites from the list
+
+---
 layout: center
 ---
 
