@@ -21,6 +21,6 @@
     "@slidev/types": "52.14.1"
   },
   "devDependencies": {
-    "@slidev/cli": "51.8.2"
+    "@slidev/cli": "52.14.1"
   }
 }
