@@ -441,7 +441,7 @@ Same recommendations as for `useState` apply:
 # Work on the assignment
 
 - Create a store with `zustand` for favorites
-- Persist that store into `@react-native-async-storage/async-storage`
+- Persist that store into `@react-native-async-storage/async-storage`<br/>Use `npx expo install` for installing native dependencies for Expo Go
 - Have a text input and a submit button to add a new favorite
 - Render the list of current favorites
 - Allow removing favorites from the list
@@ -651,6 +651,137 @@ export const useTask = (id: number) =>
 
 ---
 
+# Basic React Query Setup[^1]
+
+- Install with `npm install @tanstack/react-query`
+- Create one shared `QueryClient`
+- Wrap your app root with `QueryClientProvider`
+
+```tsx {all|4|5-15}{maxHeight:'100%'}
+// App.tsx or app/_layout.tsx
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
+export default function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RootNavigator />
+    </QueryClientProvider>
+  );
+}
+```
+
+After this `@tanstack/react-query` is available everywhere below the provider.
+
+<!-- Footer -->
+
+[^1]: https://tanstack.com/query/latest/docs/framework/react/quick-start
+
+---
+
+# Work on your Assignment
+
+- Add a TextInput as a search field for a location
+- Query the Photon API using React Query:<br/>https://photon.komoot.io/api/?q=berlin
+- Render the results in a list
+- The results should automatically change when the input is changed
+- Move your query logic into a custom hook `usePhotonQuery`
+- What to do, if the input is empty?
+- How to prevent the list from flashing when the input changes? (Hint: we need to keep the previous data)
+- Add debouncing to your search with `@tanstack/react-pacer`
+
+---
+
+# API type-safety
+
+- How do we get types for our APIs?
+  - Available endpoints
+  - Request path, params, body
+  - Response body
+- Manual types are error-prone
+- Different approaches available:
+  - `tRPC`
+  - GraphQL
+  - Generating clients from OpenAPI specs
+
+---
+
+# Generate your API Clients
+
+- Build your APIs with [OpenAPI](https://www.openapis.org/) specs
+  - Example: https://editor.swagger.io/
+  - Wildly available in all common backend languages/frameworks
+- Generate API clients for use in TypeScript
+- Create `fetch` methods for you
+- API contract
+  - OpenAPI spec must be strictly matching your actual sent data
+  - Can make versioning easier/obsolete
+- [`@hey-api/openapi-ts`](https://github.com/hey-api/openapi-ts)
+  - React Query plugin
+  - Zod plugin
+- Many other libraries available
+
+---
+layout: two-cols
+---
+
+# Plain
+
+```ts {all|1-4|6-10}{maxHeight:'100%'}
+const fetchTask = async (id: number) => {
+  const response = await fetch(`/tasks/${id}`);
+  return response.json();
+};
+
+export const useTask = (id: number) =>
+  useQuery({
+    queryKey: todoKeys.detail(id),
+    queryFn: () => fetchTask(id),
+  });
+```
+
+<v-clicks>
+
+- Full control, but more manual wiring, types omitted for brevity (!)
+- You write the request function and query wiring yourself
+- You pass `id` into both `queryKey` and `fetchTask`
+- Easy to drift when endpoints evolve
+
+</v-clicks>
+
+::right::
+
+# Generated
+
+```ts {all|1|3-8}{maxHeight:'100%'}
+import { getTaskOptions } from '@/client/@tanstack/react-query.gen';
+
+export const useTask = (id: number) =>
+  useQuery({
+    ...getTaskOptions({
+      path: { id },
+    }),
+  });
+```
+
+<v-clicks>
+
+- Less boilerplate in app code
+- `id` is passed once, generated options do the rest
+- Keep query options consistent across the team
+
+</v-clicks>
+
+---
+
+# Work on your Assignment
+
+- Create an OpenAPI client for the Photon API, add the TanStack React Query plugin
+- Use that client in your `usePhotonQuery` instead of a manual `fetch`
+
+---
+
 # `useMutation`[^1]
 
 - **Mutations** describe functions with side effects on the server (create, update, delete)
@@ -741,126 +872,14 @@ deleteTask.mutate(taskId, {
 
 [^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
 
-
 ---
 
-# Basic React Query Setup[^1]
+# Work on your Assignment
 
-- Install with `npm install @tanstack/react-query`
-- Create one shared `QueryClient`
-- Wrap your app root with `QueryClientProvider`
+- Move the getLocation logic into a `useLocationMutation` hook
+- Update your get current location logic to use that mutation and leverage `loading` and `error` states
+- Use callbacks to show the success/error as an Alert
 
-```tsx {all|4|5-15}{maxHeight:'100%'}
-// App.tsx or app/_layout.tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
-
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RootNavigator />
-    </QueryClientProvider>
-  );
-}
-```
-
-After this, `useQuery`, `useMutation` etc. are available everywhere below the provider.
-
-<!-- Footer -->
-
-[^1]: https://tanstack.com/query/latest/docs/framework/react/quick-start
-
----
-
-# Setup in your assignment and query an API
-
-- Add a TextInput as a search field for a location
-- Query the Photon API using React Query:<br/>https://photon.komoot.io/api/?q=berlin
-- Render the results in a list
-- The results should automatically change when the input is changed
-
----
-
-# API type-safety
-
-- How do we get types for our APIs?
-  - Available endpoints
-  - Request path, params, body
-  - Response body
-- Manual types are error-prone
-- Different approaches available:
-  - `tRPC`
-  - GraphQL
-  - Generating clients from OpenAPI specs
-
----
-
-# Generate your API Clients
-
-- Build your APIs with [OpenAPI](https://www.openapis.org/) specs
-  - Example: https://editor.swagger.io/
-  - Wildly available in all common backend languages/frameworks
-- Generate API clients for use in TypeScript
-- Create `fetch` methods for you
-- API contract
-  - OpenAPI spec must be strictly matching your actual sent data
-  - Can make versioning easier/obsolete
-- [`@hey-api/openapi-ts`](https://github.com/hey-api/openapi-ts)
-  - React Query plugin
-  - Zod plugin
-- Many other libraries available
-
----
-layout: two-cols
----
-
-# Plain
-
-```ts {all|1-4|6-10}{maxHeight:'100%'}
-const fetchTask = async (id: number) => {
-  const response = await fetch(`/tasks/${id}`);
-  return response.json();
-};
-
-export const useTask = (id: number) =>
-  useQuery({
-    queryKey: todoKeys.detail(id),
-    queryFn: () => fetchTask(id),
-  });
-```
-
-<v-clicks>
-
-- Full control, but more manual wiring, types omitted for brevity (!)
-- You write the request function and query wiring yourself
-- You pass `id` into both `queryKey` and `fetchTask`
-- Easy to drift when endpoints evolve
-
-</v-clicks>
-
-::right::
-
-# Generated
-
-```ts {all|1|3-8}{maxHeight:'100%'}
-import { getTaskOptions } from '@/client/@tanstack/react-query.gen';
-
-export const useTask = (id: number) =>
-  useQuery({
-    ...getTaskOptions({
-      path: { id },
-    }),
-  });
-```
-
-<v-clicks>
-
-- Less boilerplate in app code
-- `id` is passed once, generated options do the rest
-- Keep query options consistent across the team
-
-</v-clicks>
 
 ---
 layout: center
