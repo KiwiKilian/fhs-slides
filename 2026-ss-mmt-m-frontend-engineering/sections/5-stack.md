@@ -728,7 +728,7 @@ layout: two-cols
 
 # Plain
 
-```ts {all|1-4|6-10}{maxHeight:'100%'}
+```ts
 const fetchTask = async (id: number) => {
   const response = await fetch(`/tasks/${id}`);
   return response.json();
@@ -741,20 +741,16 @@ export const useTask = (id: number) =>
   });
 ```
 
-<v-clicks>
-
 - Full control, but more manual wiring, types omitted for brevity (!)
 - You write the request function and query wiring yourself
 - You pass `id` into both `queryKey` and `fetchTask`
 - Easy to drift when endpoints evolve
 
-</v-clicks>
-
 ::right::
 
 # Generated
 
-```ts {all|1|3-8}{maxHeight:'100%'}
+```ts
 import { getTaskOptions } from '@/client/@tanstack/react-query.gen';
 
 export const useTask = (id: number) =>
@@ -765,26 +761,26 @@ export const useTask = (id: number) =>
   });
 ```
 
-<v-clicks>
-
 - Less boilerplate in app code
 - `id` is passed once, generated options do the rest
 - Keep query options consistent across the team
-
-</v-clicks>
 
 ---
 
 # Work on your Assignment
 
-- Create an OpenAPI client for the Photon API, add the TanStack React Query plugin
-- Use that client in your `usePhotonQuery` instead of a manual `fetch`
+- Create an OpenAPI client with [`@hey-api/openapi-ts`](https://github.com/hey-api/openapi-ts) for the Photon API
+- Add the TanStack React Query plugin
+- Use that client in your `usePhotonQuery` instead of your `queryKey` and `queryFn`
+- Find the Photon OpenAPI Spec in the Moodle Task description
 
 ---
 
 # `useMutation`[^1]
 
-- **Mutations** describe functions with side effects on the server (create, update, delete)
+- **Mutations** describe functions with side effects or which should be called imperatively
+  - Examples: POST, PATCH, DELETE requests also client-side state updates
+  - But also client-side async state changes
 - Tracks the same states as `useQuery`: `isPending`, `isError`, `isSuccess`
 - Key difference: **imperative, not declarative**
   - `useQuery` runs automatically based on dependencies
@@ -805,6 +801,35 @@ addTask.mutate({ id: Date.now(), text: 'Buy milk', done: false })
 [^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
 
 ---
+
+
+# Mutations affect Queries – but how?[^1]
+
+When a mutation finishes, it very likely affects queries in the cache. React Query does **not** link them automatically – by design.
+
+<v-clicks>
+
+Why not?
+
+- Not everyone wants to refetch after every mutation
+- Mutation responses often already contain the updated data → manual `setQueryData`
+- When to invalidate? `onSuccess` vs `onSettled`?
+- Await the invalidation or fire-and-forget?
+
+</v-clicks>
+
+<v-click>
+
+&rarr; Too many trade-offs for a one-size-fits-all solution. React Query gives you the tools to build it yourself.
+
+</v-click>
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
+
+---
+
 
 # Tying Mutations to Queries[^1]
 
@@ -841,6 +866,166 @@ const useUpdateTask = (id: number) => {
 <!-- Footer -->
 
 [^1]: https://tkdodo.eu/blog/mastering-mutations-in-react-query
+
+---
+
+# The Global `MutationCache`[^1]
+
+`useMutation` callbacks run per mutation. The **`MutationCache`** has the same callbacks **globally** – invoked for every mutation in the app:
+
+```ts
+import { QueryClient, MutationCache } from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onSuccess: (_data, _variables, _context, mutation) => {
+      // runs after every successful mutation
+    },
+    onSettled: (_data, _error, _variables, _context, mutation) => {
+      // runs after every mutation – success or error
+    },
+  }),
+})
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
+
+---
+layout: two-cols
+---
+
+# Invalidate everything[^1]
+
+```ts
+new MutationCache({
+  onSuccess: () => {
+    queryClient.invalidateQueries()
+  },
+})
+```
+
+<v-clicks>
+
+✅ 5 lines, impossible to miss a refetch<br/>
+✅ Similar to Remix after form submissions<br/>
+✅ Active queries refetch; inactive just go stale<br/>
+❌ May trigger unrelated refetches<br/>
+❌ No per-mutation control
+
+</v-clicks>
+
+::right::
+
+# Invalidate by `mutationKey`
+
+```ts
+new MutationCache({
+  onSuccess: (_d, _v, _c, mutation) => {
+    queryClient.invalidateQueries({
+      queryKey: mutation.options.mutationKey,
+    })
+  },
+})
+
+useMutation({
+  mutationKey: ['issues'],
+  mutationFn: updateIssue,
+})
+```
+
+<v-clicks>
+
+✅ Only related queries are refetched<br/>
+✅ Mutations without a key fall back to invalidating everything<br/>
+❌ Must keep mutation & query keys in sync<br/>
+❌ Easy to forget adding a `mutationKey`
+
+</v-clicks>
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
+
+---
+
+# Fine-grained Invalidation: `meta`[^1]
+
+Tag mutations with the query keys they should invalidate using `meta`:
+
+```ts {all|1-12|14-20|22-28}{maxHeight:'100%'}
+import { matchQuery } from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onSuccess: (_data, _variables, _context, mutation) => {
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          // invalidate all matching tags, or everything if no meta is provided
+          mutation.meta?.invalidates?.some((queryKey) =>
+            matchQuery({ queryKey }, query),
+          ) ?? true,
+      })
+    },
+  }),
+})
+
+// Extend the TypeScript types via module augmentation
+declare module '@tanstack/react-query' {
+  interface Register {
+    mutationMeta: { invalidates?: Array<QueryKey> }
+  }
+}
+
+// Usage – only invalidates issues and labels
+useMutation({
+  mutationFn: updateLabel,
+  meta: { invalidates: [['issues'], ['labels']] },
+})
+```
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
+
+---
+
+# To Await or Not to Await[^1]
+
+Global invalidation is fire-and-forget. Use a **local** `onSuccess` to await what matters:
+
+```ts {all|1-7|9-20}
+// Global: invalidate everything, fire-and-forget
+const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onSuccess: () => queryClient.invalidateQueries(),
+  }),
+})
+
+// Local: await only the critical refetch
+useMutation({
+  mutationFn: updateLabel,
+  onSuccess: () => {
+    // cancelRefetch: false → reuse the already in-flight request
+    // avoids a duplicate network call for ['labels']
+    return queryClient.invalidateQueries(
+      { queryKey: ['labels'] },
+      { cancelRefetch: false },
+    )
+  },
+})
+```
+
+<v-click>
+
+Order matters: **global callback runs first**, then local. Returning a `Promise` from the local callback keeps the mutation `pending` until the refetch completes.
+
+</v-click>
+
+<!-- Footer -->
+
+[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
 
 ---
 
