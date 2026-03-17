@@ -12,7 +12,7 @@ hideInToc: false
 Common coordinate systems used on the web:
 
 - WGS 84/EPSG:4326
-  - A coordinate sytem on the surface of a sphere (the earth)
+  - A coordinate system on the surface of a sphere (the earth)
   - Used for data storage/transfer
 - Projected as: EPSG:3857
   - Projected coordinate system from a sphere to a flat map
