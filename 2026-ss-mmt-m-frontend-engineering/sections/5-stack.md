@@ -991,44 +991,6 @@ useMutation({
 
 ---
 
-# To Await or Not to Await[^1]
-
-Global invalidation is fire-and-forget. Use a **local** `onSuccess` to await what matters:
-
-```ts {all|1-7|9-20}
-// Global: invalidate everything, fire-and-forget
-const queryClient = new QueryClient({
-  mutationCache: new MutationCache({
-    onSuccess: () => queryClient.invalidateQueries(),
-  }),
-})
-
-// Local: await only the critical refetch
-useMutation({
-  mutationFn: updateLabel,
-  onSuccess: () => {
-    // cancelRefetch: false → reuse the already in-flight request
-    // avoids a duplicate network call for ['labels']
-    return queryClient.invalidateQueries(
-      { queryKey: ['labels'] },
-      { cancelRefetch: false },
-    )
-  },
-})
-```
-
-<v-click>
-
-Order matters: **global callback runs first**, then local. Returning a `Promise` from the local callback keeps the mutation `pending` until the refetch completes.
-
-</v-click>
-
-<!-- Footer -->
-
-[^1]: https://tkdodo.eu/blog/automatic-query-invalidation-after-mutations
-
----
-
 # Separate Concerns in Callbacks[^1]
 
 `useMutation` callbacks fire **before** `mutate` callbacks. The `mutate` callbacks may **not fire** if the component unmounts:
