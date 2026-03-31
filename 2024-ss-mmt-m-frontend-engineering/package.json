@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@kiwikilian/slidev-theme-fhs": "file:../theme",
-    "vue": "3.5.30"
+    "vue": "3.5.31"
   },
   "devDependencies": {
     "@kiwikilian/prettier-config": "1.0.1",
